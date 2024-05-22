@@ -5,7 +5,7 @@ import pinataSDK from '@pinata/sdk';
 import { Readable } from 'stream';
 const pinata = new pinataSDK(process.env.PINATA_API_KEY, process.env.PINATA_API_SECRET);
 // console.log("pinata",pinata)
-export async function POST(req, res) {
+export async function POST(req:any, res:any) {
 
   const data = await req.formData(); 
   const name: string|null = data.get('name') as unknown as string;

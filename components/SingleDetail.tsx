@@ -10,7 +10,7 @@ import abi from './abi/ERC721ContractAbi.json';
 
 const SingleDetail = ({ txHash }: { txHash: any }) => {
   const [transactionDetails, setTransactionDetails] = useState<any>(null);
-  const [tokenId, setTokenId] = useState<string | null>(null);
+  const [tokenId, setTokenId] = useState<string>('');
   const [nftMetadata, setNftMetadata] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
   const [method, setMethod] = useState('')
