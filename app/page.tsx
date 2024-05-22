@@ -5,6 +5,9 @@ import MintNft from "@/components/MintNft";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import PinataForm from '../components/PinataForm';
 import TransactionDetails from "@/components/TransactionDetails";
+import TransferFrom from '../components/TransaferFrom'
+import Approval from '../components/Approval'
+import SafeTransferFrom from '../components/SafeTransferFrom'
 
 export default function Home() {
   const [transactionHash, setTransactionHash] = useState<string>('');
@@ -23,6 +26,10 @@ export default function Home() {
       {/* <NFTContract/> */}
       <PinataForm/>
       <MintNft onTransactionHash={handleTransactionHash}/>
+      <TransferFrom onTransactionHash={handleTransactionHash}/>
+      <Approval onTransactionHash={handleTransactionHash}/>
+      <SafeTransferFrom onTransactionHash={handleTransactionHash}/>
+
       <TransactionDetails hash={transactionHash}/>
     </div>
     </section>

@@ -5,6 +5,7 @@ const nextConfig = {
           {
             // protocol: 'https',
             hostname: 'ipfs.io',
+            hostname: 'gateway.pinata.cloud',
             // pathname: '**',
           },
         ],

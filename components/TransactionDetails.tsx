@@ -28,9 +28,10 @@ const TransactionDetails = ({hash}:any) => {
           <th className="p-4 border border-gray-400 text-wrap">Hash</th>
           <th className="p-4 border border-gray-400">From</th>
           <th className="p-4 border border-gray-400">To</th>
+          <th className="p-4 border border-gray-400">Method</th>
           <th className="p-4 border border-gray-400">Current Owner</th>
+          <th className="p-4 border border-gray-400">Nft TokenId</th>
           <th className="p-4 border border-gray-400">Nft Name</th>
-          <th className="p-4 border border-gray-400">Nft Description</th>
           <th className="p-4 border border-gray-400">Nft Image</th>
         </tr>
         {nftTransactHashes.map((nftTransactHashes) => (
