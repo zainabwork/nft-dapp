@@ -7,8 +7,9 @@ import Image from 'next/image';
 import OwnerHistory from './OwnerHistory';
 import TokenHistoryDailog from './TokenHistoryDailog';
 import abi from './abi/ERC721ContractAbi.json';
+import { SingleDetailProps } from './interfaces/interfaces';
 
-const SingleDetail = ({ txHash }: { txHash: any }) => {
+const SingleDetail = ({ txHash, contractAddress } : SingleDetailProps ) => {
   const [transactionDetails, setTransactionDetails] = useState<any>(null);
   const [tokenId, setTokenId] = useState<string>('');
   const [nftMetadata, setNftMetadata] = useState<any>(null);
@@ -20,7 +21,7 @@ const SingleDetail = ({ txHash }: { txHash: any }) => {
   }
 
   const { data: transactionReceipt, isError, isLoading } = useWaitForTransactionReceipt({
-    hash:txHash
+    hash:txHash as `0x${string}`
   });
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const SingleDetail = ({ txHash }: { txHash: any }) => {
       );
 
       if (mintEvent) {
-        const tokenIdHex = mintEvent.topics[3]; // The tokenId is usually the fourth topic
+        const tokenIdHex = mintEvent.topics[3];
         const tokenId = ethers.BigNumber.from(tokenIdHex).toString();
         setTokenId(tokenId);
         // console.log("mintEvent",mintEvent)
@@ -43,14 +44,14 @@ const SingleDetail = ({ txHash }: { txHash: any }) => {
   }, [transactionReceipt]);
 
   const { data: ownerData } = useReadContract({
-    address: '0x685E837fCD0EEf367e2D9D58F58e0d48A0723D80',
+    address: contractAddress as `0x${string}`,
     abi: NFT_ABI,
     functionName: 'ownerOf',
     args: tokenId ? [tokenId] : [],
   });
 
   const { data: tokenURIData } = useReadContract({
-    address: '0x685E837fCD0EEf367e2D9D58F58e0d48A0723D80',
+    address: contractAddress as `0x${string}`,
     abi: NFT_ABI,
     functionName: 'tokenURI',
     args: tokenId ? [tokenId] : [],
@@ -79,7 +80,7 @@ const SingleDetail = ({ txHash }: { txHash: any }) => {
       if (!receipt || !receipt.logs) {
         throw new Error("Transaction receipt or logs not available");
       }
-      const contractLogs = receipt.logs.filter(log => log.address === "0x685E837fCD0EEf367e2D9D58F58e0d48A0723D80");
+      const contractLogs = receipt.logs.filter(log => log.address === contractAddress);
       const contractInterface = new ethers.utils.Interface(abi);
   
       contractLogs.forEach(log => {
@@ -110,7 +111,7 @@ const SingleDetail = ({ txHash }: { txHash: any }) => {
 
         </tr>
         <TokenHistoryDailog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          <OwnerHistory tokenId={tokenId} />
+          <OwnerHistory tokenId={tokenId} contractAddress={contractAddress} />
         </TokenHistoryDailog>
         </>
       ) : (

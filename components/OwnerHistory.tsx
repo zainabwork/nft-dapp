@@ -3,9 +3,8 @@ import { ethers } from 'ethers';
 import NFT_ABI from './abi/ERC721ContractAbi.json';
 import { OwnershipHistoryProps } from './interfaces/interfaces';
 
-const NFT_CONTRACT_ADDRESS = '0x685E837fCD0EEf367e2D9D58F58e0d48A0723D80';
 
-const OwnerHistory: React.FC<OwnershipHistoryProps> = ({ tokenId }) => {
+const OwnerHistory: React.FC<OwnershipHistoryProps> = ({ tokenId, contractAddress}) => {
 
   const [ownershipHistory, setOwnershipHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,7 +14,7 @@ const OwnerHistory: React.FC<OwnershipHistoryProps> = ({ tokenId }) => {
       setLoading(true);
       try {
 
-        const storedHistory = localStorage.getItem(`ownershipHistory_${tokenId}`);
+        const storedHistory = localStorage.getItem(`ownershipHistory_${tokenId}_${contractAddress}`);
         if (storedHistory) {
           setOwnershipHistory(JSON.parse(storedHistory));
           setLoading(false);
@@ -23,7 +22,7 @@ const OwnerHistory: React.FC<OwnershipHistoryProps> = ({ tokenId }) => {
         }
 
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_ABI, provider);
+        const contract = new ethers.Contract(contractAddress, NFT_ABI, provider);
 
         const filter = contract.filters.Transfer(null, null, tokenId);
         const events = await contract.queryFilter(filter);
@@ -39,7 +38,7 @@ const OwnerHistory: React.FC<OwnershipHistoryProps> = ({ tokenId }) => {
         );
 
         if(tokenId){
-            localStorage.setItem(`ownershipHistory_${tokenId}`, JSON.stringify(history));
+            localStorage.setItem(`ownershipHistory_${tokenId}_${contractAddress}`, JSON.stringify(history));
             setOwnershipHistory(history);
         } 
       } catch (error) {

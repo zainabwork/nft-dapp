@@ -38,7 +38,8 @@ try {
     const metadata = { name, description, image: imageUrl };
     const metadataResponse = await pinata.pinJSONToIPFS(metadata, {
       pinataMetadata: {
-        name: `${file.name.split('.')[0]}.json`, // Use the uploaded file name without extension as metadata file name
+        // Use the uploaded file name without extension as metadata file name
+        name: `${file.name.split('.')[0]}.json`, 
       }
       });
     const metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.IpfsHash}`;
@@ -46,7 +47,7 @@ try {
     return new Response(JSON.stringify(metadataUrl), {status : 200})
   } catch (error) {
     console.error('Error uploading to Pinata:', error);
-    return new Response("Failed to fetch all prompts", {status : 500})
+    return new Response("Failed to upload meta data", {status : 500})
   }
 };
 

@@ -1,19 +1,20 @@
 import React from 'react'
 import { useEffect,useState } from 'react';
 import SingleDetail from './SingleDetail';
+import {TransactionDetailsProps} from './interfaces/interfaces'
 
-const TransactionDetails = ({hash}:any) => {
+const TransactionDetails = ({hash, contractAddress} :TransactionDetailsProps) => {
   const [nftTransactHashes, setNftTransactHashes] = useState<string[]>([]);
 
     useEffect(() => {
-        const storedHashes = JSON.parse(localStorage.getItem('nftTransactHashes') || '[]');
+        const storedHashes = JSON.parse(localStorage.getItem(`nftTransactHashes${contractAddress}`) || '[]');
         setNftTransactHashes(storedHashes);
       }, []);
     
       useEffect(() => {
         if (hash) {
           const updatedHashes = [...nftTransactHashes, hash];
-          localStorage.setItem('nftTransactHashes', JSON.stringify(updatedHashes));
+          localStorage.setItem(`nftTransactHashes${contractAddress}`, JSON.stringify(updatedHashes));
           setNftTransactHashes(updatedHashes);
         }
       }, [hash]);
@@ -35,7 +36,7 @@ const TransactionDetails = ({hash}:any) => {
           <th className="p-4 border border-gray-400">Nft Image</th>
         </tr>
         {nftTransactHashes.map((nftTransactHashes) => (
-          <SingleDetail key={nftTransactHashes} txHash={nftTransactHashes} />
+          <SingleDetail key={nftTransactHashes} txHash={nftTransactHashes} contractAddress={contractAddress} />
       ))}
         
       </tbody>

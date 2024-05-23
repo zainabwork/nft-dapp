@@ -4,7 +4,8 @@ import { FormEvent } from 'react';
 import { useWriteContract, type BaseError } from 'wagmi';
 import contractAbi from './abi/ERC721ContractAbi.json'
 import { TransactionListProps } from './interfaces/interfaces';
-export default function MintNft({ onTransactionHash }: TransactionListProps){
+
+export default function MintNft({ onTransactionHash, contractAddress }: TransactionListProps){
 
   const { data: hash, error, isPending, writeContractAsync } = useWriteContract();
 
@@ -16,7 +17,7 @@ export default function MintNft({ onTransactionHash }: TransactionListProps){
     const uri = formData.get('uri') as string;
 
     await writeContractAsync({
-      address: '0x685E837fCD0EEf367e2D9D58F58e0d48A0723D80',
+      address: contractAddress as `0x${string}`,
       abi: contractAbi,
       functionName: 'safeMint',
       args: [to,tokenId,uri],
